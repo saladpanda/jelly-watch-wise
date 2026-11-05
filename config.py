@@ -61,6 +61,8 @@ class Configuration:
         if self.config is None:
             raise FileNotFoundError(", ".join(config_files) + " - not found")
 
+        self.debug_enabled = bool(self.get_key('general', 'debug', False))
+
         self.host = self.get_key('server', 'host', None)
         self.token = self.get_key('server', 'token', None)
 
@@ -70,6 +72,14 @@ class Configuration:
         self.no_limit_folders = self.get_key('limits', 'no_limit_folders', [])
         self.polling_interval = self.get_key('limits', 'polling_interval', 0)
         self.account_enable_on_day_reset = self.get_key('limits', 'account_enable_on_day_reset', False)
+        self.stop_active_sessions = bool(self.get_key('limits', 'stop_active_sessions_on_time_up', False))
+        self.stop_grace_min = max(0.0, float(self.get_key('limits', 'stop_grace_minutes', 3)))
+
+        self.notify_enabled = self.get_key('notifications', 'enabled', True)
+        self.notify_warn_at = self.parse_warn_at(self.get_key('notifications', 'warn_at', [20, 10, 5, 2]))
+        self.notify_repeat = max(1, int(self.get_key('notifications', 'repeat', 3)))
+        self.notify_repeat_interval = max(0, float(self.get_key('notifications', 'repeat_interval', 5)))
+        self.notify_timeout_ms = max(1000, int(self.get_key('notifications', 'timeout', 5000)))
 
         self.default_user = self.get_key('view', 'default_user', None)
         self.language = self.get_key('view', 'language', 'en')
@@ -88,6 +98,22 @@ class Configuration:
                 value = self.config[primary_key][secondary_key]
                 return value if value != "" else default_value
         return default_value
+
+    @staticmethod
+    def parse_warn_at(values):
+        if isinstance(values, (int, float)):
+            values = [values]
+        if not isinstance(values, list):
+            logger.warning(f'Improper notifications.warn_at: type {type(values)}')
+            return []
+        result = set()
+        for v in values:
+            try:
+                if int(v) > 0:
+                    result.add(int(v))
+            except (TypeError, ValueError):
+                logger.warning(f'Improper notifications.warn_at value: {v}')
+        return sorted(result, reverse=True)
 
     def validate_config_users(self, users):
         ids = [self.default_user] + [x for x in self.user_limits] + [x for x in self.no_limit_users]

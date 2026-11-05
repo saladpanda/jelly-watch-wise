@@ -15,6 +15,13 @@
     "unlocked": "Compte utilisateur activé",
     "add": "%{t} min ajoutées.",
     "sub": "%{t} min soustraites.",
-    "tech": "Détails techniques"
+    "tech": "Détails techniques",
+    "warn_header": "Temps restant",
+    "warn_text": "Il reste %{t} min pour aujourd'hui.",
+    "stop_header": "Temps écoulé",
+    "stop_text": "Votre temps d'écran pour aujourd'hui est terminé. La lecture va être arrêtée.",
+    "debug_title": "Débogage",
+    "debug_stop": "Arrêter la lecture maintenant",
+    "debug_toast": "Envoyer une notification de test"
   }
 }

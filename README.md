@@ -88,3 +88,31 @@ the app unselects all media libraries for the user, effectively revoking access.
 **Immediate playback stop** is also possible.
 The app includes buttons to immediately stop playback by disabling the user's account.
 All connections of that user are then closed, and no logging in is possible until the account is enabled again.
+
+
+## Time-left notifications
+While a user is watching, the player (e.g. Android TV) shows a toast message when the remaining time drops below
+one of the configured thresholds. Because toasts disappear quickly, each notification can be repeated.
+
+```yaml
+notifications:
+  enabled: true
+  warn_at: [20, 10, 5, 2]   # minutes left at which a notification is sent
+  repeat: 3                 # toasts sent per notification
+  repeat_interval: 5        # seconds between repeated toasts
+  timeout: 5000             # milliseconds each toast stays on screen
+```
+The check runs on every refresh, so a small `polling_interval` (or webhooks) makes the warnings more punctual.
+
+
+## Stopping playback when time is up
+With `stop_active_sessions_on_time_up: true` a running playback is stopped as soon as the limit is exceeded.
+
+```yaml
+limits:
+  stop_active_sessions_on_time_up: true
+  stop_grace_minutes: 3            # an item that ends within this many minutes is not interrupted
+```
+Every decision is written to the log (console and `config/watchwise.log`): which session was stopped (user, client,
+device, item, remaining time) and stops skipped due to the grace period. A stop runs for up to 60 s: while the
+session is still playing, a stop command is sent every second.

@@ -15,6 +15,13 @@
     "unlocked": "User account enabled",
     "add": "%{t} min added.",
     "sub": "%{t} min subtracted.",
-    "tech": "Technical details"
+    "tech": "Technical details",
+    "warn_header": "Time left",
+    "warn_text": "%{t} min left for today.",
+    "stop_header": "Time is up",
+    "stop_text": "Your watch time for today is over. Playback is being stopped.",
+    "debug_title": "Debug",
+    "debug_stop": "Stop playback now",
+    "debug_toast": "Send test toast"
   }
 }

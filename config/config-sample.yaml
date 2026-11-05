@@ -13,8 +13,17 @@ limits:                                    # all time values are in minutes
   no_limit_folders:                        # folders (media libraries) that will be kept after exceeding limits
     - b4f0000000000000000000000000095f
   account_enable_on_day_reset: true
+  stop_active_sessions_on_time_up: true    # stop running playback as soon as the limit is exceeded (logged in config/watchwise.log)
+  stop_grace_minutes: 3                    # don't interrupt an item that ends within this many minutes anyway
   polling_interval: 1.2                    # time between refreshing state from Jellyfin server
                                            # (can be 0 when webhooks are defined to call http://yourWatchWise/trigger)
+
+notifications:                     # toast messages shown on the media player (e.g. Android TV) while watching
+  enabled: true
+  warn_at: [20, 10, 5, 2]          # minutes left at which a notification is sent
+  repeat: 3                        # how many toasts are sent per notification (toasts disappear quickly)
+  repeat_interval: 5               # seconds between the repeated toasts
+  timeout: 5000                    # time in milliseconds each toast stays on screen
 
 view:
   default_user: 7ad00000000000000000000000000999
@@ -34,3 +43,4 @@ access:
 
 general:
   log_level: info                 # critical, error, warning, info, or debug
+  debug: false                    # true shows a Debug card in the GUI: stop playback now, send test toast
