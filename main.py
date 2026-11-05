@@ -90,6 +90,16 @@ async def index():
         interact.disable_user(user_id, lock)
         trigger_given_user(user_id)
 
+    def debug_action(action):
+        user_id = view['user_id']
+        try:
+            msg = action(user_id)
+        except Exception as e:
+            logger.error(f'debug action failed: {e}')
+            msg = f'error: {e}'
+        ui.notify(msg, multi_line=True, close_button=True, timeout=10000)
+        trigger_given_user(user_id)
+
     def on_connect():
         logger.debug(f'client connected: ID {ui.context.client.id}')
         all_views[ui.context.client.id] = view
@@ -135,6 +145,13 @@ async def index():
                 ui.label().bind_text_from(view, 'active_msg')
                 ui.button(i18n.t('lock'), on_click=lambda: disable_user(True)).props('color=red')
                 ui.button(i18n.t('unlock'), on_click=lambda: disable_user(False)).props('color=green')
+
+            if config.debug_enabled:
+                with ui.card():
+                    ui.label(i18n.t('debug_title')).style('color:#CCC')
+                    with ui.row():
+                        ui.button(i18n.t('debug_stop'), on_click=lambda: debug_action(interact.debug_stop_now)).props('color=orange')
+                        ui.button(i18n.t('debug_toast'), on_click=lambda: debug_action(interact.debug_test_toast)).props('color=blue')
 
             with ui.expansion(i18n.t('tech'), icon='build').style('color:#CCC; font-size:-1'):
                 link_style = 'color:#AAA; font-size:-1'

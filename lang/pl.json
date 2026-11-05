@@ -15,6 +15,13 @@
     "unlocked": "Konto przywrócono.",
     "add": "Dodano %{t} min.",
     "sub": "Odjęto %{t} min.",
-    "tech": "Technikalia"
+    "tech": "Technikalia",
+    "warn_header": "Pozostały czas",
+    "warn_text": "Na dziś zostało %{t} min.",
+    "stop_header": "Koniec czasu",
+    "stop_text": "Czas oglądania na dziś minął. Odtwarzanie zostanie zatrzymane.",
+    "debug_title": "Debugowanie",
+    "debug_stop": "Zatrzymaj odtwarzanie teraz",
+    "debug_toast": "Wyślij testowe powiadomienie"
   }
 }
